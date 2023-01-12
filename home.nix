@@ -21,6 +21,8 @@
 
   home.packages = with pkgs; [
     #list programs here
+    #oh-my-fish
+    tmux
   ];
 
   home.sessionVariables = {

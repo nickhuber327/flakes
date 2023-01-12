@@ -11,9 +11,11 @@
     ];
 
   # Bootloader.
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/sda";
-  boot.loader.grub.useOSProber = true;
+  boot.loader.grub = {
+    enable = true;
+    device = "/dev/sda";
+    useOSProber = true;
+  };
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -89,6 +91,7 @@
     #  fish
     #  thunderbird
     ];
+    shell = pkgs.fish;
   };
 
   # Allow unfree packages
@@ -99,9 +102,18 @@
   environment.systemPackages = with pkgs; [
      #neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
      wget
+     oh-my-fish
      #git
      #tmux
   ];
+
+  environment.shells = with pkgs; [ fish ];
+
+  environment.variables = rec {
+    PATH = [
+      "/root/.local/share/omf"
+    ];
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -114,8 +126,12 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-    services.openssh.enable = true;
-
+  services.openssh = {
+    enable = true;
+    permitRootLogin = "no";
+    passwordAuthentication = false;
+  };
+  
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
